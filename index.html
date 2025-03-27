@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>보드게임 모임 홍보 페이지</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: sans-serif; margin: 0; padding: 0; background: #f5f5f5; color: #333; }
+    header { background-color: #4CAF50; color: white; padding: 2rem 1rem; text-align: center; }
+    nav { background: white; padding: 1rem; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-wrap: wrap; }
+    nav a { display: inline-block; margin: 0.5rem 1rem; text-decoration: none; color: #4CAF50; font-weight: bold; }
+    section { padding: 2rem 1rem; max-width: 900px; margin: auto; background: white; margin-top: 2rem; border-radius: 8px; }
+
+    .carousel-container { position: relative; overflow: hidden; }
+    .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
+    .carousel-item { flex: 0 0 20%; padding: 0.5rem; box-sizing: border-box; }
+    .carousel-item img { width: 155px; height: 155px; object-fit: cover; border-radius: 8px; }
+    .carousel-buttons { text-align: center; margin-top: 1rem; }
+    .carousel-buttons button { margin: 0 0.5rem; padding: 0.5rem 1rem; border: none; background: #4CAF50; color: white; border-radius: 4px; cursor: pointer; }
+
+    .photo-carousel { position: relative; overflow: hidden; margin-top: 1rem; }
+    .photo-track { display: flex; transition: transform 0.5s ease-in-out; }
+    .photo-group { display: flex; flex: 0 0 100%; justify-content: space-around; }
+    .photo-group img { width: 180px; height: 120px; object-fit: cover; border-radius: 8px; }
+
+    .review-carousel { position: relative; height: auto; overflow: hidden; margin-top: 1rem; }
+    .review-slide { display: none; padding: 1rem; background: #f0f0f0; border-radius: 8px; }
+    .review-slide.active { display: block; animation: fadeIn 0.5s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .map { margin-top: 2rem; }
+    footer { background: #333; color: white; padding: 1rem; text-align: center; margin-top: 2rem; }
+    .social a { margin: 0 0.5rem; color: white; text-decoration: none; display: inline-block; }
+
+    .contact-links { display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+    .contact-links a { text-align: center; text-decoration: none; color: #333; }
+    .contact-links img { width: 60px; height: 60px; border-radius: 8px; }
+
+    @media screen and (max-width: 600px) {
+      header h1 { font-size: 1.5rem; }
+      nav a { margin: 0.5rem 0.5rem; font-size: 0.9rem; }
+      section h2 { font-size: 1.2rem; }
+      .carousel-item { flex: 0 0 50%; }
+      .photo-group { flex-direction: column; align-items: center; }
+      .contact-links { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎲 일요일 보드게임 모임</h1>
+    <p>매주 일요일, 누구나 환영합니다!</p>
+  </header>
+
+  <nav>
+    <a href="#about">소개</a>
+    <a href="#games">보유 게임</a>
+    <a href="#lastweek">지난 모임</a>
+    <a href="#location">위치</a>
+    <a href="#contact">예약/문의</a>
+  </nav>
+
+  <section id="about">
+    <h2>모임 소개</h2>
+    <p>보드게임을 좋아하는 사람들과 함께 즐거운 시간을 보내보세요. 다양한 게임, 다양한 사람들! 누구나 참여할 수 있습니다.</p>
+    <p><strong>모임 시간:</strong> 매주 일요일 오후 2시 ~ 7시</p>
+  </section>
+
+  <section id="games">
+    <h2>보유중인 게임들</h2>
+    <div class="carousel-container">
+      <div class="carousel-track" id="carousel-track">
+        <!-- 게임 이미지들 -->
+        <div class="carousel-item"><img src="https://via.placeholder.com/155?text=카탄" alt="카탄"></div>
+        <div class="carousel-item"><img src="https://via.placeholder.com/155?text=티켓투라이드" alt="티켓 투 라이드"></div>
+        <div class="carousel-item"><img src="https://via.placeholder.com/155?text=스플렌더" alt="스플렌더"></div>
+        <div class="carousel-item"><img src="https://via.placeholder.com/155?text=러브레터" alt="러브레터"></div>
+        <div class="carousel-item"><img src="https://via.placeholder.com/155?text=팬데믹" alt="팬데믹"></div>
+        <div class="carousel-item"><img src="https://via.placeholder.com/155?text=코드네임" alt="코드네임"></div>
+        <div class="carousel-item"><img src="https://via.placeholder.com/155?text=한밤의늑대인간" alt="한밤의 늑대인간"></div>
+        <div class="carousel-item"><img src="https://via.placeholder.com/155?text=블러핑" alt="블러핑"></div>
+        <div class="carousel-item"><img src="https://via.placeholder.com/155?text=도블" alt="도블"></div>
+        <div class="carousel-item"><img src="https://via.placeholder.com/155?text=스컬킹" alt="스컬킹"></div>
+      </div>
+      <div class="carousel-buttons">
+        <button onclick="moveCarousel(-1)">← 이전</button>
+        <button onclick="moveCarousel(1)">다음 →</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="lastweek">
+    <h2>지난주 참여자 및 사진</h2>
+    <p>지난 모임에 함께한 사람들과 즐거운 순간들입니다!</p>
+    <div class="photo-carousel">
+      <div class="photo-track" id="photo-track">
+        <div class="photo-group">
+          <img src="https://via.placeholder.com/180x120?text=모임1" alt="모임1">
+          <img src="https://via.placeholder.com/180x120?text=모임2" alt="모임2">
+          <img src="https://via.placeholder.com/180x120?text=모임3" alt="모임3">
+        </div>
+        <div class="photo-group">
+          <img src="https://via.placeholder.com/180x120?text=모임4" alt="모임4">
+          <img src="https://via.placeholder.com/180x120?text=모임5" alt="모임5">
+          <img src="https://via.placeholder.com/180x120?text=모임6" alt="모임6">
+        </div>
+      </div>
+    </div>
+
+    <div class="review-carousel" id="review-carousel">
+      <div class="review-slide active">“게임도 좋고 사람들도 좋아요!” - 지원</div>
+      <div class="review-slide">“정말 힐링되는 주말이었어요.” - 태윤</div>
+      <div class="review-slide">“혼자 왔는데 금방 친해졌어요.” - 유리</div>
+    </div>
+  </section>
+
+  <section id="location">
+    <h2>오시는 길</h2>
+    <p>서울시 강남구 어디구 어디동 123-45 5층</p>
+    <div class="map">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3162.9111100287425!2d127.02762131564602!3d37.49794273462964!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca158ae3c7d1f%3A0x1b32b353fa88f831!2z6rK964Ko66eI65Sp7ZWZ7IS87YSw!5e0!3m2!1sko!2skr!4v1615551530389!5m2!1sko!2skr" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>예약 및 문의</h2>
+    <div class="contact-links">
+      <a href="https://forms.gle/your-reserve-link" target="_blank">
+        <img src="https://via.placeholder.com/60?text=예약" alt="예약">
+        <div>예약하기</div>
+      </a>
+      <a href="https://instagram.com/yourpage" target="_blank">
+        <img src="https://via.placeholder.com/60?text=인스타" alt="Instagram">
+        <div>Instagram</div>
+      </a>
+      <a href="https://open.kakao.com/o/yourchat" target="_blank">
+        <img src="https://via.placeholder.com/60?text=카톡" alt="카카오톡">
+        <div>KakaoTalk</div>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 일요일 보드게임 모임</p>
+    <div class="social">
+      <a href="https://instagram.com/yourpage" target="_blank">Instagram</a>
+      <a href="https://open.kakao.com/o/yourchat" target="_blank">KakaoTalk</a>
+    </div>
+  </footer>
+
+  <script>
+    let currentIndex = 0;
+    const track = document.getElementById('carousel-track');
+    const itemsPerPage = 5;
+    const totalItems = track.children.length;
+
+    function moveCarousel(direction) {
+      const maxIndex = Math.ceil(totalItems / itemsPerPage) - 1;
+      currentIndex += direction;
+      if (currentIndex < 0) currentIndex = 0;
+      if (currentIndex > maxIndex) currentIndex = maxIndex;
+      const moveX = -(100 * currentIndex);
+      track.style.transform = `translateX(${moveX}%)`;
+    }
+
+    // 후기 자동 슬라이드
+    const reviews = document.querySelectorAll('.review-slide');
+    let reviewIndex = 0;
+    setInterval(() => {
+      reviews.forEach((el, i) => el.classList.toggle('active', i === reviewIndex));
+      reviewIndex = (reviewIndex + 1) % reviews.length;
+    }, 3000);
+
+    // 사진 자동 슬라이드
+    const photoTrack = document.getElementById('photo-track');
+    const photoGroups = document.querySelectorAll('.photo-group');
+    let photoIndex = 0;
+    setInterval(() => {
+      photoIndex = (photoIndex + 1) % photoGroups.length;
+      photoTrack.style.transform = `translateX(-${100 * photoIndex}%)`;
+    }, 3000);
+  </script>
+</body>
+</html>
