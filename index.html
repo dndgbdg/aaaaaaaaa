@@ -13,17 +13,15 @@
     nav a { display: inline-block; margin: 0.5rem 1rem; text-decoration: none; color: #4CAF50; font-weight: bold; }
     section { padding: 2rem 1rem; max-width: 900px; margin: auto; background: white; margin-top: 2rem; border-radius: 8px; }
 
-    .carousel-container { position: relative; overflow: hidden; }
-    .carousel-track { display: flex; transition: transform 0.5s ease-in-out; }
-    .carousel-item { flex: 0 0 20%; padding: 0.5rem; box-sizing: border-box; }
+    .carousel-container, .photo-carousel { position: relative; overflow: hidden; }
+    .carousel-track, .photo-track { display: flex; transition: transform 0.5s ease-in-out; }
+    .carousel-item { flex: 0 0 33.33%; padding: 0.5rem; box-sizing: border-box; display: flex; justify-content: center; }
     .carousel-item img { width: 155px; height: 155px; object-fit: cover; border-radius: 8px; }
     .carousel-buttons { text-align: center; margin-top: 1rem; }
     .carousel-buttons button { margin: 0 0.5rem; padding: 0.5rem 1rem; border: none; background: #4CAF50; color: white; border-radius: 4px; cursor: pointer; }
 
-    .photo-carousel { position: relative; overflow: hidden; margin-top: 1rem; }
-    .photo-track { display: flex; transition: transform 0.5s ease-in-out; }
-    .photo-group { display: flex; flex: 0 0 100%; justify-content: space-around; }
-    .photo-group img { width: 180px; height: 120px; object-fit: cover; border-radius: 8px; }
+    .photo-item { flex: 0 0 33.33%; display: flex; justify-content: center; }
+    .photo-item img { width: 180px; height: 120px; object-fit: cover; border-radius: 8px; }
 
     .review-carousel { position: relative; height: auto; overflow: hidden; margin-top: 1rem; }
     .review-slide { display: none; padding: 1rem; background: #f0f0f0; border-radius: 8px; }
@@ -34,17 +32,17 @@
     footer { background: #333; color: white; padding: 1rem; text-align: center; margin-top: 2rem; }
     .social a { margin: 0 0.5rem; color: white; text-decoration: none; display: inline-block; }
 
-    .contact-links { display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+    .contact-links { display: flex; justify-content: center; align-items: center; flex-wrap: nowrap; gap: 2rem; margin-top: 1rem; flex-direction: row; }
     .contact-links a { text-align: center; text-decoration: none; color: #333; }
-    .contact-links img { width: 60px; height: 60px; border-radius: 8px; }
+    .contact-links img { width: 60px; height: 60px; border-radius: 8px; display: block; margin: 0 auto 0.5rem; }
 
     @media screen and (max-width: 600px) {
       header h1 { font-size: 1.5rem; }
       nav a { margin: 0.5rem 0.5rem; font-size: 0.9rem; }
       section h2 { font-size: 1.2rem; }
-      .carousel-item { flex: 0 0 50%; }
-      .photo-group { flex-direction: column; align-items: center; }
-      .contact-links { flex-direction: column; }
+      .carousel-item { flex: 0 0 100%; }
+      .photo-item { flex: 0 0 100%; }
+      .contact-links { flex-direction: row; flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -72,7 +70,6 @@
     <h2>보유중인 게임들</h2>
     <div class="carousel-container">
       <div class="carousel-track" id="carousel-track">
-        <!-- 게임 이미지들 -->
         <div class="carousel-item"><img src="https://via.placeholder.com/155?text=카탄" alt="카탄"></div>
         <div class="carousel-item"><img src="https://via.placeholder.com/155?text=티켓투라이드" alt="티켓 투 라이드"></div>
         <div class="carousel-item"><img src="https://via.placeholder.com/155?text=스플렌더" alt="스플렌더"></div>
@@ -96,16 +93,12 @@
     <p>지난 모임에 함께한 사람들과 즐거운 순간들입니다!</p>
     <div class="photo-carousel">
       <div class="photo-track" id="photo-track">
-        <div class="photo-group">
-          <img src="https://via.placeholder.com/180x120?text=모임1" alt="모임1">
-          <img src="https://via.placeholder.com/180x120?text=모임2" alt="모임2">
-          <img src="https://via.placeholder.com/180x120?text=모임3" alt="모임3">
-        </div>
-        <div class="photo-group">
-          <img src="https://via.placeholder.com/180x120?text=모임4" alt="모임4">
-          <img src="https://via.placeholder.com/180x120?text=모임5" alt="모임5">
-          <img src="https://via.placeholder.com/180x120?text=모임6" alt="모임6">
-        </div>
+        <div class="photo-item"><img src="https://via.placeholder.com/180x120?text=모임1" alt="모임1"></div>
+        <div class="photo-item"><img src="https://via.placeholder.com/180x120?text=모임2" alt="모임2"></div>
+        <div class="photo-item"><img src="https://via.placeholder.com/180x120?text=모임3" alt="모임3"></div>
+        <div class="photo-item"><img src="https://via.placeholder.com/180x120?text=모임4" alt="모임4"></div>
+        <div class="photo-item"><img src="https://via.placeholder.com/180x120?text=모임5" alt="모임5"></div>
+        <div class="photo-item"><img src="https://via.placeholder.com/180x120?text=모임6" alt="모임6"></div>
       </div>
     </div>
 
@@ -153,15 +146,13 @@
   <script>
     let currentIndex = 0;
     const track = document.getElementById('carousel-track');
-    const itemsPerPage = 5;
     const totalItems = track.children.length;
 
     function moveCarousel(direction) {
-      const maxIndex = Math.ceil(totalItems / itemsPerPage) - 1;
       currentIndex += direction;
-      if (currentIndex < 0) currentIndex = 0;
-      if (currentIndex > maxIndex) currentIndex = maxIndex;
-      const moveX = -(100 * currentIndex);
+      if (currentIndex >= totalItems) currentIndex = 0;
+      if (currentIndex < 0) currentIndex = totalItems - 1;
+      const moveX = -(100 / 3) * currentIndex;
       track.style.transform = `translateX(${moveX}%)`;
     }
 
@@ -173,13 +164,15 @@
       reviewIndex = (reviewIndex + 1) % reviews.length;
     }, 3000);
 
-    // 사진 자동 슬라이드
+    // 사진 자동 슬라이드 (한 장씩 오른쪽으로 무한 이동)
     const photoTrack = document.getElementById('photo-track');
-    const photoGroups = document.querySelectorAll('.photo-group');
+    const photoItems = document.querySelectorAll('.photo-item');
     let photoIndex = 0;
     setInterval(() => {
-      photoIndex = (photoIndex + 1) % photoGroups.length;
-      photoTrack.style.transform = `translateX(-${100 * photoIndex}%)`;
+      photoIndex++;
+      if (photoIndex >= photoItems.length) photoIndex = 0;
+      const moveX = -(100 / 3) * photoIndex;
+      photoTrack.style.transform = `translateX(${moveX}%)`;
     }, 3000);
   </script>
 </body>
