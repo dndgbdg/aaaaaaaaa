@@ -283,9 +283,9 @@
         const values = row.split(',');
         return {
           name: values[0],
-          image: values[1],
-          players: values[2],
-          type: values.slice(3).join(',')
+          players: values[1],
+          recommended: values[2],
+          genre: values[3]
         };
       });
 
@@ -298,9 +298,10 @@
         slide.setAttribute('onclick', 'showGameInfo(this)');
         slide.setAttribute('data-name', game.name);
         slide.setAttribute('data-players', game.players);
-        slide.setAttribute('data-type', game.type);
+        slide.setAttribute('data-recommended', game.recommended);
+        slide.setAttribute('data-genre', game.genre);
         slide.innerHTML = `
-          <img src="./img/game/${game.image}" alt="${game.name}">
+          <img src="./img/game/${game.name}.jpg" alt="${game.name}">
           <div>${game.name}</div>
         `;
         wrapper.appendChild(slide);
@@ -350,7 +351,8 @@
     function showGameInfo(elem) {
       const name = elem.getAttribute('data-name');
       const players = elem.getAttribute('data-players');
-      const type = elem.getAttribute('data-type');
+      const recommended = elem.getAttribute('data-recommended');
+      const genre = elem.getAttribute('data-genre');
 
       const popup = document.createElement('div');
       popup.className = 'game-popup';
@@ -359,7 +361,8 @@
           <span class="close-btn" onclick="this.parentElement.parentElement.remove();">&times;</span>
           <h3>${name}</h3>
           <p><strong>인원:</strong> ${players}</p>
-          <p><strong>장르:</strong> ${type}</p>
+          <p><strong>추천 인원:</strong> ${recommended}</p>
+          <p><strong>장르:</strong> ${genre}</p>
         </div>
       `;
       document.body.appendChild(popup);
