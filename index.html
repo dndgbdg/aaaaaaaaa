@@ -220,20 +220,7 @@
     </div>
     <div class="review-carousel-wrapper">
       <div class="swiper review-swiper">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div>“혼자 왔는데 금방 친해졌어요.”</div>
-            <div class="review-author">현욱 <span>25.03.31</span></div>
-          </div>
-          <div class="swiper-slide">
-            <div>“매주 기다려지는 모임이에요.”</div>
-            <div class="review-author">유진 <span>25.03.24</span></div>
-          </div>
-          <div class="swiper-slide">
-            <div>“게임도 좋고 사람들도 좋아요!”</div>
-            <div class="review-author">진영 <span>25.03.31</span></div>
-          </div>
-        </div>
+        <div class="swiper-wrapper"></div>
       </div>
     </div>
   </section>
@@ -308,8 +295,37 @@
       });
     }
 
+    async function loadReviewsFromCSV() {
+      const response = await fetch('./리뷰.csv');
+      const text = await response.text();
+      const rows = text.trim().split('\n');
+      const headers = rows[0].split(',');
+      const reviews = rows.slice(1).map(row => {
+        const values = row.split(',');
+        return {
+          name: values[0],
+          date: values[1],
+          content: values.slice(2).join(',')
+        };
+      });
+
+      const wrapper = document.querySelector('.review-swiper .swiper-wrapper');
+      wrapper.innerHTML = '';
+
+      reviews.forEach(r => {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        slide.innerHTML = `
+          <div>${r.content}</div>
+          <div class="review-author">${r.name} <span>${r.date}</span></div>
+        `;
+        wrapper.appendChild(slide);
+      });
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       loadGamesFromCSV();
+      loadReviewsFromCSV();
 
       new Swiper(".mySwiper", {
         slidesPerView: 3,
