@@ -215,16 +215,7 @@
   <section id="lastweek">
     <h2>지난주 참여자 및 사진</h2>
     <div class="swiper lastSwiper">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide">
-          <img src="./img/review/20250331.jpg" alt="20250331">
-          <span>25.03.31 참여자들 사진</span>
-        </div>
-        <div class="swiper-slide">
-          <img src="./img/review/20250324.jpg" alt="20250324">
-          <span>25.03.24 참여자들 사진</span>
-        </div>
-      </div>
+      <div class="swiper-wrapper"></div>
     </div>
     <div class="review-carousel-wrapper">
       <div class="swiper review-swiper">
@@ -273,20 +264,13 @@
       const response = await fetch('./게임종류.csv');
       const text = await response.text();
       const rows = text.trim().split('\n');
-      const headers = rows[0].split(',');
       const gameData = rows.slice(1).map(row => {
-        const values = row.split(',');
-        return {
-          name: values[0],
-          players: values[1],
-          recommended: values[2],
-          genre: values[3]
-        };
+        const [name, players, recommended, genre] = row.split(',');
+        return { name, players, recommended, genre };
       });
 
       const wrapper = document.querySelector('.mySwiper .swiper-wrapper');
       wrapper.innerHTML = '';
-
       gameData.forEach(game => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
@@ -307,19 +291,13 @@
       const response = await fetch('./리뷰.csv');
       const text = await response.text();
       const rows = text.trim().split('\n');
-      const headers = rows[0].split(',');
       const reviews = rows.slice(1).map(row => {
-        const values = row.split(',');
-        return {
-          name: values[0],
-          date: values[1],
-          content: values.slice(2).join(',')
-        };
+        const [name, date, ...contentParts] = row.split(',');
+        return { name, date, content: contentParts.join(',') };
       });
 
       const wrapper = document.querySelector('.review-swiper .swiper-wrapper');
       wrapper.innerHTML = '';
-
       reviews.forEach(r => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
@@ -331,9 +309,52 @@
       });
     }
 
+    async function loadPhotosFromCSV() {
+      const response = await fetch('./참여자들사진.csv');
+      const text = await response.text();
+      const rows = text.trim().split('\n');
+      const photos = rows.slice(1).map(row => {
+        const [filename, caption] = row.split(',');
+        return { filename, caption };
+      });
+
+      const wrapper = document.querySelector('.lastSwiper .swiper-wrapper');
+      wrapper.innerHTML = '';
+      photos.forEach(p => {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        slide.innerHTML = `
+          <img src="./img/review/${p.filename}" alt="${p.caption}">
+          <span>${p.caption}</span>
+        `;
+        wrapper.appendChild(slide);
+      });
+    }
+
+    function showGameInfo(elem) {
+      const name = elem.getAttribute('data-name');
+      const players = elem.getAttribute('data-players');
+      const recommended = elem.getAttribute('data-recommended');
+      const genre = elem.getAttribute('data-genre');
+
+      const popup = document.createElement('div');
+      popup.className = 'game-popup';
+      popup.innerHTML = `
+        <div class="popup-content">
+          <span class="close-btn" onclick="this.parentElement.parentElement.remove();">&times;</span>
+          <h3>${name}</h3>
+          <p><strong>인원:</strong> ${players}</p>
+          <p><strong>추천 인원:</strong> ${recommended}</p>
+          <p><strong>장르:</strong> ${genre}</p>
+        </div>
+      `;
+      document.body.appendChild(popup);
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       loadGamesFromCSV();
       loadReviewsFromCSV();
+      loadPhotosFromCSV();
 
       new Swiper(".mySwiper", {
         slidesPerView: 3,
@@ -371,26 +392,6 @@
         }
       });
     });
-
-    function showGameInfo(elem) {
-      const name = elem.getAttribute('data-name');
-      const players = elem.getAttribute('data-players');
-      const recommended = elem.getAttribute('data-recommended');
-      const genre = elem.getAttribute('data-genre');
-
-      const popup = document.createElement('div');
-      popup.className = 'game-popup';
-      popup.innerHTML = `
-        <div class="popup-content">
-          <span class="close-btn" onclick="this.parentElement.parentElement.remove();">&times;</span>
-          <h3>${name}</h3>
-          <p><strong>인원:</strong> ${players}</p>
-          <p><strong>추천 인원:</strong> ${recommended}</p>
-          <p><strong>장르:</strong> ${genre}</p>
-        </div>
-      `;
-      document.body.appendChild(popup);
-    }
   </script>
 </body>
 </html>
