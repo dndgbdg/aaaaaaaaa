@@ -198,35 +198,7 @@
   <section id="games">
     <h2>보유중인 게임들</h2>
     <div class="swiper mySwiper">
-      <div class="swiper-wrapper">
-        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="카탄" data-players="3~4명" data-type="전략, 자원관리">
-          <img src="./img/game/카탄.jpg" alt="카탄"><div>카탄</div>
-        </div>
-        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="티켓 투 라이드" data-players="2~5명" data-type="전략, 노선 연결">
-          <img src="./img/game/티켓투라이드.jpg" alt="티켓 투 라이드"><div>티켓 투 라이드</div>
-        </div>
-        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="스플렌더" data-players="2~4명" data-type="세트 수집">
-          <img src="./img/game/스플렌더.jpg" alt="스플렌더"><div>스플렌더</div>
-        </div>
-        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="러브레터" data-players="2~4명" data-type="심리 추리">
-          <img src="./img/game/러브레터.jpg" alt="러브레터"><div>러브레터</div>
-        </div>
-        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="팬데믹" data-players="2~4명" data-type="협력 전략">
-          <img src="./img/game/팬데믹.jpg" alt="팬데믹"><div>팬데믹</div>
-        </div>
-        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="코드네임" data-players="2~8명" data-type="단어 추리">
-          <img src="./img/game/코드네임.jpg" alt="코드네임"><div>코드네임</div>
-        </div>
-        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="한밤의 늑대인간" data-players="4~10명" data-type="정체 은폐">
-          <img src="./img/game/한밤의늑대인간.jpg" alt="한밤의 늑대인간"><div>한밤의 늑대인간</div>
-        </div>
-        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="블러핑" data-players="3~6명" data-type="심리 게임">
-          <img src="./img/game/블러핑.jpg" alt="블러핑"><div>블러핑</div>
-        </div>
-        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="도블" data-players="2~8명" data-type="순발력">
-          <img src="./img/game/도블.jpg" alt="도블"><div>도블</div>
-        </div>
-      </div>
+      <div class="swiper-wrapper"></div>
       <div class="swiper-button-next"></div>
       <div class="swiper-button-prev"></div>
     </div>
@@ -270,7 +242,7 @@
     <h2>오시는 길</h2>
     <p>서울시 광진구 화양동 16-37 (건대입구역 도보 7분)</p>
     <div class="map">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3164.7524968058917!2d127.068023!3d37.5440149!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca5139344f0c3%3A0xf853b26bd1df0bcb!2z7ZmU7KO87Yq567OE7IucIOyLoOqzoeybkA!5e0!3m2!1sko!2skr!4v1711870000000!5m2!1sko!2skr" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      <iframe src="https://www.google.com/maps/embed?..." width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
     </div>
   </section>
 
@@ -302,40 +274,77 @@
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
-    new Swiper(".mySwiper", {
-      slidesPerView: 3,
-      spaceBetween: 20,
-      navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev"
-      },
-      loop: true,
-      breakpoints: {
-        0: { slidesPerView: 3 }
-      }
-    });
+    async function loadGamesFromCSV() {
+      const response = await fetch('./게임종류.csv');
+      const text = await response.text();
+      const rows = text.trim().split('\n');
+      const headers = rows[0].split(',');
+      const gameData = rows.slice(1).map(row => {
+        const values = row.split(',');
+        return {
+          name: values[0],
+          image: values[1],
+          players: values[2],
+          type: values.slice(3).join(',')
+        };
+      });
 
-    new Swiper(".lastSwiper", {
-      slidesPerView: 1,
-      loop: true,
-      autoplay: { delay: 3000 },
-      effect: 'fade',
-      fadeEffect: { crossFade: true }
-    });
+      const wrapper = document.querySelector('.mySwiper .swiper-wrapper');
+      wrapper.innerHTML = '';
 
-    new Swiper(".review-swiper", {
-      slidesPerView: 3,
-      spaceBetween: 16,
-      loop: true,
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false
-      },
-      breakpoints: {
-        0: { slidesPerView: 1 },
-        600: { slidesPerView: 2 },
-        900: { slidesPerView: 3 }
-      }
+      gameData.forEach(game => {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide';
+        slide.setAttribute('onclick', 'showGameInfo(this)');
+        slide.setAttribute('data-name', game.name);
+        slide.setAttribute('data-players', game.players);
+        slide.setAttribute('data-type', game.type);
+        slide.innerHTML = `
+          <img src="./img/game/${game.image}" alt="${game.name}">
+          <div>${game.name}</div>
+        `;
+        wrapper.appendChild(slide);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadGamesFromCSV();
+
+      new Swiper(".mySwiper", {
+        slidesPerView: 3,
+        spaceBetween: 20,
+        navigation: {
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev"
+        },
+        loop: true,
+        breakpoints: {
+          0: { slidesPerView: 3 }
+        }
+      });
+
+      new Swiper(".lastSwiper", {
+        slidesPerView: 1,
+        loop: true,
+        autoplay: { delay: 3000 },
+        effect: 'fade',
+        fadeEffect: { crossFade: true }
+      });
+
+      new Swiper(".review-swiper", {
+        slidesPerView: 3,
+        spaceBetween: 16,
+        loop: true,
+        autoplay: {
+          delay: 3000,
+          disableOnInteraction: false
+        },
+        breakpoints: {
+          0: { slidesPerView: 1 },
+          600: { slidesPerView: 2 },
+          900: { slidesPerView: 3 }
+        }
+      });
     });
 
     function showGameInfo(elem) {
