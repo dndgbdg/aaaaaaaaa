@@ -83,12 +83,20 @@
     .review-swiper .swiper-slide {
       background: #f0f0f0;
       border-radius: 8px;
-      padding: 1rem;
-      font-size: 0.95rem;
+      padding: 0.5rem;
+      font-size: 0.85rem;
       display: flex;
       justify-content: space-between;
       flex-direction: column;
-      height: 100px;
+      height: auto;
+      min-height: 80px;
+    }
+    @media screen and (max-width: 600px) {
+      .review-swiper .swiper-slide {
+        font-size: 0.75rem;
+        padding: 0.3rem;
+        min-height: 70px;
+      }
     }
     .review-author {
       display: flex;
@@ -357,8 +365,8 @@
           disableOnInteraction: false
         },
         breakpoints: {
-          0: { slidesPerView: 1 },
-          600: { slidesPerView: 2 },
+          0: { slidesPerView: 3 },
+          600: { slidesPerView: 3 },
           900: { slidesPerView: 3 }
         }
       });
