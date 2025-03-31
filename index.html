@@ -19,15 +19,31 @@
 
     @media screen and (max-width: 600px) {
       .swiper-slide img { width: 120px; height: 120px; }
+      .lastSwiper .swiper-slide img { max-height: 220px; }
     }
 
-    .lastSwiper .swiper-slide { height: 300px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-    .lastSwiper .swiper-slide img { width: 100%; height: auto; border-radius: 10px; max-width: 100%; max-height: 260px; object-fit: cover; }
+    .lastSwiper .swiper-slide { height: 380px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+    .lastSwiper .swiper-slide img { width: 100%; height: auto; border-radius: 10px; max-width: 100%; max-height: 320px; object-fit: cover; }
     .lastSwiper .swiper-slide span { margin-top: 0.5rem; font-weight: bold; font-size: 1rem; }
 
-    .review-carousel-wrapper { position: relative; max-width: 100%; overflow: hidden; height: 160px; }
-    .review-slide { position: absolute; top: 0; left: 0; right: 0; padding: 1rem; background: #f0f0f0; border-radius: 8px; opacity: 0; transition: opacity 0.8s ease-in-out; }
-    .review-slide.active { opacity: 1; z-index: 1; }
+    .review-carousel-wrapper { margin-top: 2rem; }
+    .review-swiper .swiper-slide {
+      background: #f0f0f0;
+      border-radius: 8px;
+      padding: 1rem;
+      font-size: 0.95rem;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      height: 100px;
+    }
+    .review-author {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: #666;
+    }
 
     .map { margin-top: 2rem; height: 300px; border-radius: 8px; overflow: hidden; }
     footer { background: #333; color: white; padding: 1rem; text-align: center; margin-top: 2rem; }
@@ -42,35 +58,6 @@
   </style>
 </head>
 <body>
-  <header>
-    <img src="./img/배너.jpg" alt="일요일 보드게임 모임 배너">
-  </header>
-
-  <nav>
-    <a href="#about">소개</a>
-    <a href="#games">보유 게임</a>
-    <a href="#lastweek">지난 모임</a>
-    <a href="#location">위치</a>
-    <a href="#contact">예약/문의</a>
-  </nav>
-
-  <section id="about">
-    <h2>모임 소개</h2>
-    <p>보드게임을 좋아하는 사람들과 함께 즐거운 시간을 보내보세요. 다양한 게임, 다양한 사람들! 누구나 참여할 수 있습니다.</p>
-    <p><strong>모임 시간:</strong> 매주 일요일 오후 1시 ~ 6시</p>
-  </section>
-
-  <section id="games">
-    <h2>보유중인 게임들</h2>
-    <div class="swiper mySwiper">
-      <div class="swiper-wrapper">
-        <!-- 게임 이미지 슬라이드 생략 -->
-      </div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
-    </div>
-  </section>
-
   <section id="lastweek">
     <h2>지난주 참여자 및 사진</h2>
     <div class="swiper lastSwiper">
@@ -85,47 +72,30 @@
         </div>
       </div>
     </div>
+
     <div class="review-carousel-wrapper">
-      <div class="review-slide active">“게임도 좋고 사람들도 좋아요!” - 진영</div>
-      <div class="review-slide">“정말 힐링되는 주말이었어요.” - 승민</div>
-      <div class="review-slide">“혼자 왔는데 금방 친해졌어요.” - 현욱</div>
+      <div class="swiper review-swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div>“게임도 좋고 사람들도 좋아요!”</div>
+            <div class="review-author">진영 <span>25.03.31</span></div>
+          </div>
+          <div class="swiper-slide">
+            <div>“정말 힐링되는 주말이었어요.”</div>
+            <div class="review-author">승민 <span>25.03.31</span></div>
+          </div>
+          <div class="swiper-slide">
+            <div>“혼자 왔는데 금방 친해졌어요.”</div>
+            <div class="review-author">현욱 <span>25.03.31</span></div>
+          </div>
+          <div class="swiper-slide">
+            <div>“매주 기다려지는 모임이에요.”</div>
+            <div class="review-author">유진 <span>25.03.24</span></div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
-
-
-  <section id="location">
-    <h2>오시는 길</h2>
-    <p>서울시 광진구 화양동 16-37 (건대입구역 도보 7분)</p>
-    <div class="map">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3164.7524968058917!2d127.068023!3d37.5440149!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357ca5139344f0c3%3A0xf853b26bd1df0bcb!2z7ZmU7KO87Yq567OE7IucIOyLoOqzoeybkA!5e0!3m2!1sko!2skr!4v1711870000000!5m2!1sko!2skr" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-    </div>
-  </section>
-
-  <section id="contact">
-    <h2>예약 및 문의</h2>
-    <div class="contact-links">
-      <a href="https://munto.page.link/N4ac" target="_blank">
-        <img src="./img/icon/문토.jpg" alt="문토">
-        <div>Munto</div>
-      </a>
-      <a href="https://www.instagram.com/xyeonxun_0307/" target="_blank">
-        <img src="./img/icon/인스타.jpg" alt="Instagram">
-        <div>Instagram</div>
-      </a>
-      <a href="https://open.kakao.com/o/gdRnjiah" target="_blank">
-        <img src="./img/icon/카카오톡.jpg" alt="카카오톡">
-        <div>KakaoTalk</div>
-      </a>
-    </div>
-  </section>
-
-  <footer>
-    <p>© 2025 일요일 보드게임 모임</p>
-    <div class="social">
-      <a href="https://www.instagram.com/xyeonxun_0307/" target="_blank">Instagram</a>
-      <a href="https://open.kakao.com/o/gdRnjiah" target="_blank">KakaoTalk</a>
-    </div>
-  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
@@ -147,15 +117,23 @@
       loop: true,
       autoplay: { delay: 3000 },
       effect: 'fade',
-      fadeEffect: { crossFade: true },
+      fadeEffect: { crossFade: true }
     });
 
-    const reviews = document.querySelectorAll('.review-slide');
-    let reviewIndex = 0;
-    setInterval(() => {
-      reviews.forEach((el, i) => el.classList.toggle('active', i === reviewIndex));
-      reviewIndex = (reviewIndex + 1) % reviews.length;
-    }, 4000);
+    new Swiper(".review-swiper", {
+      slidesPerView: 3,
+      spaceBetween: 16,
+      loop: true,
+      autoplay: {
+        delay: 3000,
+        disableOnInteraction: false
+      },
+      breakpoints: {
+        0: { slidesPerView: 1 },
+        600: { slidesPerView: 2 },
+        900: { slidesPerView: 3 }
+      }
+    });
 
     function showGameInfo(elem) {
       const name = elem.getAttribute('data-name');
