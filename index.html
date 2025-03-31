@@ -17,19 +17,17 @@
     .swiper-slide img { width: 155px; height: 155px; object-fit: cover; border-radius: 8px; }
     .swiper-slide div { margin-top: 0.5rem; font-weight: bold; color: #333; }
 
-    .photo-item { flex: 0 0 33.33%; display: flex; justify-content: center; }
-    .photo-item img { width: 180px; height: 120px; object-fit: cover; border-radius: 8px; }
+    @media screen and (max-width: 600px) {
+      .swiper-slide img { width: 120px; height: 120px; }
+    }
 
-    .review-carousel { position: relative; height: auto; overflow: hidden; margin-top: 1rem; }
-    .review-slide { display: none; padding: 1rem; background: #f0f0f0; border-radius: 8px; }
-    .review-slide.active { display: block; animation: fadeIn 0.5s ease-in-out; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .review-carousel-wrapper { position: relative; max-width: 100%; overflow: hidden; height: 160px; }
+    .review-slide { position: absolute; top: 0; left: 0; right: 0; padding: 1rem; background: #f0f0f0; border-radius: 8px; opacity: 0; transition: opacity 0.8s ease-in-out; }
+    .review-slide.active { opacity: 1; z-index: 1; }
 
     .map { margin-top: 2rem; height: 300px; border-radius: 8px; overflow: hidden; }
-
     footer { background: #333; color: white; padding: 1rem; text-align: center; margin-top: 2rem; }
     .social a { margin: 0 0.5rem; color: white; text-decoration: none; display: inline-block; }
-
     .contact-links { display: flex; justify-content: center; align-items: center; flex-wrap: nowrap; gap: 2rem; margin-top: 1rem; flex-direction: row; }
     .contact-links a { text-align: center; text-decoration: none; color: #333; }
     .contact-links img { width: 60px; height: 60px; border-radius: 8px; display: block; margin: 0 auto 0.5rem; }
@@ -37,11 +35,6 @@
     .game-popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 9999; }
     .popup-content { background: white; padding: 1rem; border-radius: 8px; text-align: center; position: relative; width: 80%; max-width: 300px; }
     .close-btn { position: absolute; top: 5px; right: 10px; font-size: 1.5rem; cursor: pointer; }
-
-    @media screen and (max-width: 600px) {
-      nav a { margin: 0.5rem 0.5rem; font-size: 0.9rem; }
-      section h2 { font-size: 1.2rem; }
-    }
   </style>
 </head>
 <body>
@@ -67,17 +60,32 @@
     <h2>보유중인 게임들</h2>
     <div class="swiper mySwiper">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" onclick="showGameInfo(this)">
-          <img src="./img/game/카탄.jpg" alt="카탄" data-name="카탄" data-players="3~4명" data-type="전략, 자원관리">
-          <div>카탄</div>
+        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="카탄" data-players="3~4명" data-type="전략, 자원관리">
+          <img src="./img/game/카탄.jpg" alt="카탄"><div>카탄</div>
         </div>
-        <div class="swiper-slide" onclick="showGameInfo(this)">
-          <img src="./img/game/티켓투라이드.jpg" alt="티켓투라이드" data-name="티켓 투 라이드" data-players="2~5명" data-type="전략, 노선 연결">
-          <div>티켓 투 라이드</div>
+        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="티켓 투 라이드" data-players="2~5명" data-type="전략, 노선 연결">
+          <img src="./img/game/티켓투라이드.jpg" alt="티켓 투 라이드"><div>티켓 투 라이드</div>
         </div>
-        <div class="swiper-slide" onclick="showGameInfo(this)">
-          <img src="./img/game/스플렌더.jpg" alt="스플렌더" data-name="스플렌더" data-players="2~4명" data-type="세트 모으기, 전략">
-          <div>스플렌더</div>
+        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="스플렌더" data-players="2~4명" data-type="세트 수집">
+          <img src="./img/game/스플렌더.jpg" alt="스플렌더"><div>스플렌더</div>
+        </div>
+        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="러브레터" data-players="2~4명" data-type="심리 추리">
+          <img src="./img/game/러브레터.jpg" alt="러브레터"><div>러브레터</div>
+        </div>
+        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="팬데믹" data-players="2~4명" data-type="협력 전략">
+          <img src="./img/game/팬데믹.jpg" alt="팬데믹"><div>팬데믹</div>
+        </div>
+        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="코드네임" data-players="2~8명" data-type="단어 추리">
+          <img src="./img/game/코드네임.jpg" alt="코드네임"><div>코드네임</div>
+        </div>
+        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="한밤의 늑대인간" data-players="4~10명" data-type="정체 은폐">
+          <img src="./img/game/한밤의늑대인간.jpg" alt="한밤의 늑대인간"><div>한밤의 늑대인간</div>
+        </div>
+        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="블러핑" data-players="3~6명" data-type="심리 게임">
+          <img src="./img/game/블러핑.jpg" alt="블러핑"><div>블러핑</div>
+        </div>
+        <div class="swiper-slide" onclick="showGameInfo(this)" data-name="도블" data-players="2~8명" data-type="순발력">
+          <img src="./img/game/도블.jpg" alt="도블"><div>도블</div>
         </div>
       </div>
       <div class="swiper-button-next"></div>
@@ -87,14 +95,13 @@
 
   <section id="lastweek">
     <h2>지난주 참여자 및 사진</h2>
-    <p>지난 모임에 함께한 사람들과 즐거운 순간들입니다!</p>
-    <div class="photo-carousel">
-      <div class="photo-track" id="photo-track">
-        <div class="photo-item"><img src="./img/review/20250331.jpg" alt="20250331"></div>
-        <div class="photo-item"><img src="./img/review/20250324.jpg" alt="20250324"></div>
+    <div class="swiper lastSwiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><img src="./img/review/20250331.jpg" alt="20250331"></div>
+        <div class="swiper-slide"><img src="./img/review/20250324.jpg" alt="20250324"></div>
       </div>
     </div>
-    <div class="review-carousel" id="review-carousel">
+    <div class="review-carousel-wrapper">
       <div class="review-slide active">“게임도 좋고 사람들도 좋아요!” - 진영</div>
       <div class="review-slide">“정말 힐링되는 주말이었어요.” - 승민</div>
       <div class="review-slide">“혼자 왔는데 금방 친해졌어요.” - 현욱</div>
@@ -137,17 +144,25 @@
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
-    const swiper = new Swiper(".mySwiper", {
+    new Swiper(".mySwiper", {
       slidesPerView: 3,
       spaceBetween: 20,
       navigation: {
         nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
+        prevEl: ".swiper-button-prev"
       },
       loop: true,
       breakpoints: {
-        0: { slidesPerView: 3 } // 모바일에서도 3장
+        0: { slidesPerView: 3 }
       }
+    });
+
+    new Swiper(".lastSwiper", {
+      slidesPerView: 1,
+      loop: true,
+      autoplay: { delay: 3000 },
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
     });
 
     const reviews = document.querySelectorAll('.review-slide');
@@ -155,22 +170,12 @@
     setInterval(() => {
       reviews.forEach((el, i) => el.classList.toggle('active', i === reviewIndex));
       reviewIndex = (reviewIndex + 1) % reviews.length;
-    }, 3000);
+    }, 4000);
 
-    const photoTrack = document.getElementById('photo-track');
-    const photoItems = document.querySelectorAll('.photo-item');
-    let photoIndex = 0;
-    setInterval(() => {
-      photoIndex++;
-      if (photoIndex >= photoItems.length) photoIndex = 0;
-      const moveX = -(100 / 3) * photoIndex;
-      photoTrack.style.transform = `translateX(${moveX}%)`;
-    }, 3000);
-
-    function showGameInfo(img) {
-      const name = img.getAttribute('data-name');
-      const players = img.getAttribute('data-players');
-      const type = img.getAttribute('data-type');
+    function showGameInfo(elem) {
+      const name = elem.getAttribute('data-name');
+      const players = elem.getAttribute('data-players');
+      const type = elem.getAttribute('data-type');
 
       const popup = document.createElement('div');
       popup.className = 'game-popup';
