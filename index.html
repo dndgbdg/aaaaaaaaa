@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>보드게임 모임 홍보 페이지</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=if93vv6grm"></script>
   <style>
     html { scroll-behavior: smooth; }
     body { font-family: sans-serif; margin: 0; padding: 0; background: #f5f5f5; color: #333; }
     header img { width: 100%; max-height: 300px; object-fit: cover; }
-
     nav {
       background: white;
       padding: 1rem;
@@ -26,7 +26,6 @@
       color: #4CAF50;
       font-weight: bold;
     }
-
     section {
       padding: 2rem 1rem;
       max-width: 900px;
@@ -35,7 +34,6 @@
       margin-top: 2rem;
       border-radius: 8px;
     }
-
     .swiper-slide {
       text-align: center;
       display: flex;
@@ -53,12 +51,10 @@
       font-weight: bold;
       color: #333;
     }
-
     @media screen and (max-width: 600px) {
       .swiper-slide img { width: 120px; height: 120px; }
       .lastSwiper .swiper-slide img { max-height: 220px; }
     }
-
     .lastSwiper .swiper-slide {
       height: auto;
       display: flex;
@@ -78,7 +74,6 @@
       font-weight: bold;
       font-size: 1rem;
     }
-
     .review-carousel-wrapper { margin-top: 1.5rem; }
     .review-swiper .swiper-slide {
       background: #f0f0f0;
@@ -105,14 +100,12 @@
       font-size: 0.85rem;
       color: #666;
     }
-
     .map {
       margin-top: 2rem;
       height: 300px;
       border-radius: 8px;
       overflow: hidden;
     }
-
     footer {
       background: #333;
       color: white;
@@ -120,14 +113,12 @@
       text-align: center;
       margin-top: 2rem;
     }
-
     .social a {
       margin: 0 0.5rem;
       color: white;
       text-decoration: none;
       display: inline-block;
     }
-
     .contact-links {
       display: flex;
       justify-content: center;
@@ -137,13 +128,11 @@
       margin-top: 1rem;
       flex-direction: row;
     }
-
     .contact-links a {
       text-align: center;
       text-decoration: none;
       color: #333;
     }
-
     .contact-links img {
       width: 60px;
       height: 60px;
@@ -151,7 +140,6 @@
       display: block;
       margin: 0 auto 0.5rem;
     }
-
     .game-popup {
       position: fixed;
       top: 0;
@@ -164,7 +152,6 @@
       justify-content: center;
       z-index: 9999;
     }
-
     .popup-content {
       background: white;
       padding: 1rem;
@@ -174,7 +161,6 @@
       width: 80%;
       max-width: 300px;
     }
-
     .close-btn {
       position: absolute;
       top: 5px;
@@ -188,7 +174,6 @@
   <header>
     <img src="./img/배너.jpg" alt="일요일 보드게임 모임 배너">
   </header>
-
   <nav>
     <a href="#about">소개</a>
     <a href="#games">보유 게임</a>
@@ -227,9 +212,7 @@
   <section id="location">
     <h2>오시는 길</h2>
     <p>서울시 광진구 화양동 16-37 (건대입구역 도보 7분)</p>
-    <div class="map">
-      <iframe src="https://www.google.com/maps/embed?..." width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-    </div>
+    <div id="map" class="map"></div>
   </section>
 
   <section id="contact">
@@ -258,140 +241,21 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
-    async function loadGamesFromCSV() {
-      const response = await fetch('./게임종류.csv');
-      const text = await response.text();
-      const rows = text.trim().split('\n');
-      const gameData = rows.slice(1).map(row => {
-        const [name, players, recommended, genre] = row.split(',');
-        return { name, players, recommended, genre };
+    function initNaverMap() {
+      const map = new naver.maps.Map('map', {
+        center: new naver.maps.LatLng(37.5440149, 127.068023),
+        zoom: 16
       });
 
-      const wrapper = document.querySelector('.mySwiper .swiper-wrapper');
-      wrapper.innerHTML = '';
-      gameData.forEach(game => {
-        const slide = document.createElement('div');
-        slide.className = 'swiper-slide';
-        slide.setAttribute('onclick', 'showGameInfo(this)');
-        slide.setAttribute('data-name', game.name);
-        slide.setAttribute('data-players', game.players);
-        slide.setAttribute('data-recommended', game.recommended);
-        slide.setAttribute('data-genre', game.genre);
-        slide.innerHTML = `
-          <img src="./img/game/${game.name}.jpg" alt="${game.name}">
-          <div>${game.name}</div>
-        `;
-        wrapper.appendChild(slide);
+      new naver.maps.Marker({
+        position: new naver.maps.LatLng(37.5440149, 127.068023),
+        map: map,
+        title: '일요일 보드게임 모임 장소'
       });
     }
 
-    async function loadReviewsFromCSV() {
-      const response = await fetch('./리뷰.csv');
-      const text = await response.text();
-      const rows = text.trim().split('\n');
-      const reviews = rows.slice(1).map(row => {
-        const [name, date, ...contentParts] = row.split(',');
-        return { name, date, content: contentParts.join(',') };
-      });
-
-      const wrapper = document.querySelector('.review-swiper .swiper-wrapper');
-      wrapper.innerHTML = '';
-      reviews.forEach(r => {
-        const slide = document.createElement('div');
-        slide.className = 'swiper-slide';
-        slide.innerHTML = `
-          <div>${r.content}</div>
-          <div class="review-author">${r.name} <span>${r.date}</span></div>
-        `;
-        wrapper.appendChild(slide);
-      });
-    }
-
-    async function loadPhotosFromCSV() {
-      const response = await fetch('./참여자들사진.csv');
-      const text = await response.text();
-      const rows = text.trim().split('\n');
-      const photos = rows.slice(1).map(row => {
-        const [filename, caption] = row.split(',');
-        return { filename, caption };
-      });
-
-      const wrapper = document.querySelector('.lastSwiper .swiper-wrapper');
-      wrapper.innerHTML = '';
-      photos.forEach(p => {
-        const slide = document.createElement('div');
-        slide.className = 'swiper-slide';
-        slide.innerHTML = `
-          <img src="./img/review/${p.filename}" alt="${p.caption}">
-          <span>${p.caption}</span>
-        `;
-        wrapper.appendChild(slide);
-      });
-    }
-
-    function showGameInfo(elem) {
-      const name = elem.getAttribute('data-name');
-      const players = elem.getAttribute('data-players');
-      const recommended = elem.getAttribute('data-recommended');
-      const genre = elem.getAttribute('data-genre');
-
-      const popup = document.createElement('div');
-      popup.className = 'game-popup';
-      popup.innerHTML = `
-        <div class="popup-content">
-          <span class="close-btn" onclick="this.parentElement.parentElement.remove();">&times;</span>
-          <h3>${name}</h3>
-          <p><strong>인원:</strong> ${players}</p>
-          <p><strong>추천 인원:</strong> ${recommended}</p>
-          <p><strong>장르:</strong> ${genre}</p>
-        </div>
-      `;
-      document.body.appendChild(popup);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      loadGamesFromCSV();
-      loadReviewsFromCSV();
-      loadPhotosFromCSV();
-
-      new Swiper(".mySwiper", {
-        slidesPerView: 3,
-        spaceBetween: 20,
-        navigation: {
-          nextEl: ".swiper-button-next",
-          prevEl: ".swiper-button-prev"
-        },
-        loop: true,
-        breakpoints: {
-          0: { slidesPerView: 3 }
-        }
-      });
-
-      new Swiper(".lastSwiper", {
-        slidesPerView: 1,
-        loop: true,
-        autoplay: { delay: 3000 },
-        effect: 'fade',
-        fadeEffect: { crossFade: true }
-      });
-
-      new Swiper(".review-swiper", {
-        slidesPerView: 3,
-        spaceBetween: 16,
-        loop: true,
-        autoplay: {
-          delay: 3000,
-          disableOnInteraction: false
-        },
-        breakpoints: {
-          0: { slidesPerView: 3 },
-          600: { slidesPerView: 3 },
-          900: { slidesPerView: 3 }
-        }
-      });
-    });
+    window.addEventListener('load', initNaverMap);
   </script>
 </body>
 </html>
