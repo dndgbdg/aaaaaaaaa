@@ -43,8 +43,9 @@
     }
 
     .swiper-slide img {
-      width: 160px;
-      height: 160px;
+      width: 90%;
+      max-width: 120px;
+      height: auto;
       object-fit: cover;
       border-radius: 8px;
     }
@@ -354,19 +355,15 @@
       loadReviewsFromCSV();
       loadPhotosFromCSV();
 
-      // ✅ 반응형 겹침 방지 설정
+      
       new Swiper(".mySwiper", {
-        spaceBetween: 20,
+        slidesPerView: 3,
+        spaceBetween: 10,
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev"
         },
-        loop: true,
-        breakpoints: {
-          0: { slidesPerView: 1 },
-          600: { slidesPerView: 2 },
-          900: { slidesPerView: 3 }
-        }
+        loop: true
       });
 
       new Swiper(".lastSwiper", {
@@ -378,16 +375,12 @@
       });
 
       new Swiper(".review-swiper", {
-        spaceBetween: 16,
+        slidesPerView: 3,
+        spaceBetween: 10,
         loop: true,
         autoplay: {
           delay: 3000,
           disableOnInteraction: false
-        },
-        breakpoints: {
-          0: { slidesPerView: 1 },
-          600: { slidesPerView: 2 },
-          900: { slidesPerView: 3 }
         }
       });
     });
