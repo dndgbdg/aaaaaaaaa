@@ -305,8 +305,8 @@
       const text = await response.text();
       const rows = text.trim().split('\n');
       const reviews = rows.slice(1).map(row => {
-        const [name, date, ...contentParts] = row.split(',');
-        return { name, date, content: contentParts.join(',') };
+        const [name, , ...contentParts] = row.split(',');
+        return { name, content: contentParts.join(',') };
       });
 
       const wrapper = document.querySelector('.review-swiper .swiper-wrapper');
@@ -316,7 +316,7 @@
         slide.className = 'swiper-slide';
         slide.innerHTML = `
           <div>${r.content}</div>
-          <div class="review-author">${r.name} <span>${r.date}</span></div>
+          <div class="review-author">${r.name}</div>
         `;
         wrapper.appendChild(slide);
       });
