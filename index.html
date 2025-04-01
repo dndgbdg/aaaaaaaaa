@@ -42,18 +42,24 @@
       border-radius: 8px;
     }
 
-    .swiper-slide {
-      text-align: center;
+    .mySwiper .swiper-slide {
+      width: 160px;
+      height: auto;
+      flex-shrink: 0;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
     }
-    .swiper-slide img {
-      width: 155px;
-      height: 155px;
+
+    .mySwiper .swiper-slide img {
+      width: 150px;
+      height: 150px;
       object-fit: cover;
       border-radius: 8px;
     }
+
     .swiper-slide div {
       margin-top: 0.5rem;
       font-weight: bold;
