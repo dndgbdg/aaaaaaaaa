@@ -354,14 +354,19 @@
       loadReviewsFromCSV();
       loadPhotosFromCSV();
 
+      // ✅ 반응형 겹침 방지 설정
       new Swiper(".mySwiper", {
-        slidesPerView: 3,
         spaceBetween: 20,
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev"
         },
-        loop: true
+        loop: true,
+        breakpoints: {
+          0: { slidesPerView: 1 },
+          600: { slidesPerView: 2 },
+          900: { slidesPerView: 3 }
+        }
       });
 
       new Swiper(".lastSwiper", {
@@ -373,12 +378,16 @@
       });
 
       new Swiper(".review-swiper", {
-        slidesPerView: 3,
         spaceBetween: 16,
         loop: true,
         autoplay: {
           delay: 3000,
           disableOnInteraction: false
+        },
+        breakpoints: {
+          0: { slidesPerView: 1 },
+          600: { slidesPerView: 2 },
+          900: { slidesPerView: 3 }
         }
       });
     });
