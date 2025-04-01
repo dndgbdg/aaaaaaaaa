@@ -36,36 +36,41 @@
       border-radius: 8px;
     }
 
-    .swiper-slide {
-      text-align: center;
+    .map img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .mySwiper .swiper-slide {
+      flex-shrink: 0;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
     }
-    .swiper-slide img {
-      width: 155px;
-      height: 155px;
+
+    .mySwiper .swiper-slide img {
+      width: 150px;
+      height: 150px;
       object-fit: cover;
       border-radius: 8px;
     }
+
+    @media screen and (max-width: 600px) {
+      .mySwiper .swiper-slide img {
+        width: 120px;
+        height: 120px;
+      }
+    }
+
     .swiper-slide div {
       margin-top: 0.5rem;
       font-weight: bold;
       color: #333;
     }
 
-    @media screen and (max-width: 600px) {
-      .swiper-slide img { width: 120px; height: 120px; }
-      .lastSwiper .swiper-slide img { max-height: 220px; }
-    }
-
-    .lastSwiper .swiper-slide {
-      height: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
     .lastSwiper .swiper-slide img {
       width: 100%;
       height: auto;
@@ -73,13 +78,7 @@
       max-width: 100%;
       object-fit: contain;
     }
-    .lastSwiper .swiper-slide span {
-      margin-top: 0.3rem;
-      font-weight: bold;
-      font-size: 1rem;
-    }
 
-    .review-carousel-wrapper { margin-top: 1.5rem; }
     .review-swiper .swiper-slide {
       background: #f0f0f0;
       border-radius: 8px;
@@ -91,41 +90,13 @@
       height: auto;
       min-height: 80px;
     }
-    @media screen and (max-width: 600px) {
-      .review-swiper .swiper-slide {
-        font-size: 0.75rem;
-        padding: 0.3rem;
-        min-height: 70px;
-      }
-    }
+
     .review-author {
       display: flex;
       justify-content: space-between;
       margin-top: 0.5rem;
       font-size: 0.85rem;
       color: #666;
-    }
-
-    .map {
-      margin-top: 2rem;
-      height: 300px;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    footer {
-      background: #333;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      margin-top: 2rem;
-    }
-
-    .social a {
-      margin: 0 0.5rem;
-      color: white;
-      text-decoration: none;
-      display: inline-block;
     }
 
     .contact-links {
@@ -142,6 +113,14 @@
       text-align: center;
       text-decoration: none;
       color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contact-links a div {
+      text-decoration: none;
     }
 
     .contact-links img {
@@ -150,6 +129,21 @@
       border-radius: 8px;
       display: block;
       margin: 0 auto 0.5rem;
+    }
+
+    footer {
+      background: #333;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+
+    .social a {
+      margin: 0 0.5rem;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
     }
 
     .game-popup {
@@ -193,8 +187,8 @@
     <a href="#about">소개</a>
     <a href="#games">보유 게임</a>
     <a href="#lastweek">지난 모임</a>
-    <a href="#location">위치</a>
-    <a href="#contact">예약/문의</a>
+    <a href="#location">오시는 길</a>
+    <a href="#contact">문의</a>
   </nav>
 
   <section id="about">
@@ -228,7 +222,7 @@
     <h2>오시는 길</h2>
     <p>서울시 광진구 화양동 16-37 (건대입구역 도보 7분)</p>
     <div class="map">
-      <iframe src="https://www.google.com/maps/embed?..." width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+      <img src="./img/지도.jpg" alt="오시는 길 지도 이미지" />
     </div>
   </section>
 
@@ -263,7 +257,7 @@
     async function loadGamesFromCSV() {
       const response = await fetch('./게임종류.csv');
       const text = await response.text();
-      const rows = text.trim().split('\n');
+      const rows = text.trim().split('\\n');
       const gameData = rows.slice(1).map(row => {
         const [name, players, recommended, genre] = row.split(',');
         return { name, players, recommended, genre };
@@ -290,7 +284,7 @@
     async function loadReviewsFromCSV() {
       const response = await fetch('./리뷰.csv');
       const text = await response.text();
-      const rows = text.trim().split('\n');
+      const rows = text.trim().split('\\n');
       const reviews = rows.slice(1).map(row => {
         const [name, date, ...contentParts] = row.split(',');
         return { name, date, content: contentParts.join(',') };
@@ -312,7 +306,7 @@
     async function loadPhotosFromCSV() {
       const response = await fetch('./참여자들사진.csv');
       const text = await response.text();
-      const rows = text.trim().split('\n');
+      const rows = text.trim().split('\\n');
       const photos = rows.slice(1).map(row => {
         const [filename, caption] = row.split(',');
         return { filename, caption };
@@ -363,10 +357,7 @@
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev"
         },
-        loop: true,
-        breakpoints: {
-          0: { slidesPerView: 3 }
-        }
+        loop: true
       });
 
       new Swiper(".lastSwiper", {
@@ -384,11 +375,6 @@
         autoplay: {
           delay: 3000,
           disableOnInteraction: false
-        },
-        breakpoints: {
-          0: { slidesPerView: 3 },
-          600: { slidesPerView: 3 },
-          900: { slidesPerView: 3 }
         }
       });
     });
