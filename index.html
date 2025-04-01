@@ -273,32 +273,28 @@
 
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
-    async function loadGamesFromCSV() {
-      const response = await fetch('./게임종류.csv');
-      const text = await response.text();
-      const rows = text.trim().split('\n');
-      const gameData = rows.slice(1).map(row => {
-        const [name, players, recommended, genre] = row.split(',');
-        return { name, players, recommended, genre };
-      });
+async function loadReviewsFromCSV() {
+  const response = await fetch('./리뷰.csv');
+  const text = await response.text();
+  const rows = text.trim().split('\n');
+  const reviews = rows.slice(1).map(row => {
+    const [name, ...contentParts] = row.split(',');
+    return { name, content: contentParts.join(',') };
+  });
 
-      const wrapper = document.querySelector('.mySwiper .swiper-wrapper');
-      wrapper.innerHTML = '';
-      gameData.forEach(game => {
-        const slide = document.createElement('div');
-        slide.className = 'swiper-slide';
-        slide.setAttribute('onclick', 'showGameInfo(this)');
-        slide.setAttribute('data-name', game.name);
-        slide.setAttribute('data-players', game.players);
-        slide.setAttribute('data-recommended', game.recommended);
-        slide.setAttribute('data-genre', game.genre);
-        slide.innerHTML = `
-          <img src="./img/game/${game.name}.jpg" alt="${game.name}">
-          <div>${game.name}</div>
-        `;
-        wrapper.appendChild(slide);
-      });
-    }
+  const wrapper = document.querySelector('.review-swiper .swiper-wrapper');
+  wrapper.innerHTML = '';
+  reviews.forEach(r => {
+    const slide = document.createElement('div');
+    slide.className = 'swiper-slide';
+    slide.innerHTML = `
+      <div>${r.content}</div>
+      <div class="review-author">${r.name}</div>
+    `;
+    wrapper.appendChild(slide);
+  });
+}
+
 
     async function loadReviewsFromCSV() {
       const response = await fetch('./리뷰.csv');
