@@ -214,9 +214,8 @@
 닌텐도&보드게임&포켓볼 하실분들을 모집합니다✨️
 </pre>
     <p><strong>모임 시간:</strong> 매주 일요일 오후 1시 ~ 6시</p>
-      <img src="./img/메뉴.jpg" alt="메뉴 이미지" style="width:100%; max-width:500px; border-radius:8px; margin-top:1rem;">
+    <img src="./img/메뉴.jpg" alt="메뉴 이미지" style="width:100%; max-width:500px; border-radius:8px; margin-top:1rem;">
   </section>
-
   <section id="games">
     <h2>보유중인 게임들</h2>
     <div class="swiper mySwiper">
@@ -225,6 +224,7 @@
       <div class="swiper-button-prev"></div>
     </div>
   </section>
+
   <section id="lastweek">
     <h2>지난주 참여자 및 사진</h2>
     <div class="swiper lastSwiper">
@@ -292,10 +292,10 @@
         slide.setAttribute('data-players', game.players);
         slide.setAttribute('data-recommended', game.recommended);
         slide.setAttribute('data-genre', game.genre);
-        slide.innerHTML = 
+        slide.innerHTML = `
           <img src="./img/game/${game.name}.jpg" alt="${game.name}">
           <div>${game.name}</div>
-        ;
+        `;
         wrapper.appendChild(slide);
       });
     }
@@ -314,10 +314,10 @@
       reviews.forEach(r => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
-        slide.innerHTML = 
+        slide.innerHTML = `
           <div>${r.content}</div>
           <div class="review-author">${r.name} <span>${r.date}</span></div>
-        ;
+        `;
         wrapper.appendChild(slide);
       });
     }
@@ -336,10 +336,10 @@
       photos.forEach(p => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
-        slide.innerHTML = 
+        slide.innerHTML = `
           <img src="./img/review/${p.filename}" alt="${p.caption}">
           <span>${p.caption}</span>
-        ;
+        `;
         wrapper.appendChild(slide);
       });
     }
@@ -352,7 +352,7 @@
 
       const popup = document.createElement('div');
       popup.className = 'game-popup';
-      popup.innerHTML = 
+      popup.innerHTML = `
         <div class="popup-content">
           <span class="close-btn" onclick="this.parentElement.parentElement.remove();">&times;</span>
           <h3>${name}</h3>
@@ -360,7 +360,7 @@
           <p><strong>추천 인원:</strong> ${recommended}</p>
           <p><strong>장르:</strong> ${genre}</p>
         </div>
-      ;
+      `;
       document.body.appendChild(popup);
     }
 
