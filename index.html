@@ -8,7 +8,12 @@
   <style>
     html { scroll-behavior: smooth; }
     body { font-family: sans-serif; margin: 0; padding: 0; background: #f5f5f5; color: #333; }
-    header img { width: 100%; max-height: 300px; object-fit: cover; }
+
+    header img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+    }
 
     nav {
       background: white;
@@ -18,6 +23,7 @@
       overflow-x: auto;
       white-space: nowrap;
     }
+
     nav a {
       display: inline-block;
       margin: 0.5rem 1rem;
@@ -35,11 +41,14 @@
       border-radius: 8px;
     }
 
+    /* ✅ 투표 팝업 스타일 */
     .vote-popup {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.5);
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.6);
       display: none;
       justify-content: center;
       align-items: center;
@@ -51,7 +60,7 @@
     }
 
     .vote-box {
-      background: #fff;
+      background: white;
       padding: 2rem;
       border-radius: 12px;
       width: 90%;
@@ -62,9 +71,10 @@
 
     .vote-box h2 {
       margin-top: 0;
+      font-size: 1.3rem;
     }
 
-    .vote-box button.close-btn {
+    .vote-box .close-btn {
       position: absolute;
       top: 10px;
       right: 15px;
@@ -74,20 +84,21 @@
       cursor: pointer;
     }
 
-    .vote-result-block {
-      background: #f0f0f0;
+    #results {
+      max-height: 200px;
+      overflow-y: auto;
       margin-top: 1rem;
-      padding: 0.5rem;
-      border-radius: 6px;
+      background: #f9f9f9;
+      padding: 0.7rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 0.9rem;
     }
 
-    .vote-result-block strong {
-      display: inline-block;
-      width: 100px;
-    }
-
-    .vote-result-block small {
-      color: #666;
+    #results div {
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px dashed #ddd;
     }
   </style>
 </head>
@@ -97,41 +108,31 @@
   </header>
 
   <nav>
+    <a href="#" onclick="openVotePopup()">음료투표</a>
     <a href="#about">소개</a>
     <a href="#games">보유 게임</a>
     <a href="#lastweek">지난 모임</a>
     <a href="#location">오시는 길</a>
     <a href="#contact">문의</a>
-    <a href="#" onclick="document.querySelector('.vote-popup').classList.add('active')">투표</a>
+    
   </nav>
 
-  <!-- ✅ 투표 팝업 창 -->
+  <!-- ✅ 투표 팝업창 -->
   <div class="vote-popup">
     <div class="vote-box">
-  <button class="close-btn" onclick="document.querySelector('.vote-popup').classList.remove('active')">×</button>
-  <h2 style="margin-bottom: 1rem;">참여자 투표</h2>
-
-  <form id="voteForm" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-    <input type="text" id="name" placeholder="닉네임 입력" style="width: 90%; padding: 0.5rem;" required />
-    <select id="choice" style="width: 90%; padding: 0.5rem;" required>
-      <option value="">-- 투표 항목 선택 --</option>
-    </select>
-    <button type="submit" style="padding: 0.5rem 1rem;">투표하기</button>
-  </form>
-
-  <h3 style="margin-top: 2rem;">실시간 결과</h3>
-  <div id="results" style="
-    max-height: 200px;
-    overflow-y: auto;
-    margin-top: 1rem;
-    border: 1px solid #ccc;
-    padding: 0.5rem;
-    border-radius: 6px;
-    background: #f9f9f9;
-    font-size: 0.95rem;
-  "></div>
-</div>
-
+      <button class="close-btn" onclick="closeVotePopup()">×</button>
+      <h2>참여자 투표</h2>
+      <form id="voteForm">
+        <input type="text" id="name" placeholder="닉네임 입력" required style="width:100%; padding:0.5rem;" />
+        <select id="choice" required style="width:100%; margin-top:0.7rem; padding:0.5rem;">
+          <option value="">-- 투표 항목 선택 --</option>
+        </select>
+        <button type="submit" style="margin-top: 1rem; padding: 0.5rem 1rem;">투표하기</button>
+      </form>
+      <h3 style="margin-top:1.5rem;">실시간 결과</h3>
+      <div id="results"></div>
+    </div>
+  </div>
   <section id="about">
     <h2>모임 소개</h2>
     <pre>✅ 보드게임하고싶은데.. 같이 할사람이 없을때
@@ -211,6 +212,15 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
 
   <script>
+    // ✅ 팝업 열고 닫기
+    function openVotePopup() {
+      document.querySelector('.vote-popup').classList.add('active');
+    }
+
+    function closeVotePopup() {
+      document.querySelector('.vote-popup').classList.remove('active');
+    }
+
     // ✅ Firebase 설정
     const firebaseConfig = {
       apiKey: "AIzaSyBYGLHgGbyfInoSJD8Xh50F_wl71h1pNZs",
@@ -218,15 +228,13 @@
       projectId: "vote-4e2da",
       storageBucket: "vote-4e2da.firebasestorage.app",
       messagingSenderId: "408749919354",
-      appId: "1:408749919354:web:7a31ee10bc5fca28807fc3",
-      measurementId: "G-YHKYKNTJ5Q"
+      appId: "1:408749919354:web:7a31ee10bc5fca28807fc3"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
     const voteItems = Array.from({ length: 17 }, (_, i) => `투표${i + 1}`);
 
-    // 투표 항목 select 박스 채우기
+    // ✅ 투표 항목 select 박스에 삽입
     function populateVoteOptions() {
       const select = document.getElementById('choice');
       if (!select) return;
@@ -238,7 +246,7 @@
       });
     }
 
-    // 투표 제출
+    // ✅ 투표 제출 처리
     const form = document.getElementById('voteForm');
     if (form) {
       form.addEventListener('submit', async (e) => {
@@ -255,7 +263,7 @@
       });
     }
 
-    // 실시간 결과 표 표시
+    // ✅ 실시간 결과 표시
     function setupRealtimeResults() {
       const resultsDiv = document.getElementById('results');
       if (!resultsDiv) return;
@@ -272,14 +280,13 @@
         voteItems.forEach(item => {
           const names = grouped[item];
           const block = document.createElement('div');
-          block.className = 'vote-result-block';
-          block.innerHTML = `<strong>${item} :</strong> ${names.join(', ') || ' '}<br /><small>(${names.length}명)</small>`;
+          block.innerHTML = `<strong>${item}</strong>: ${names.join(', ') || '없음'} <span style="color:#888;">(${names.length}명)</span>`;
           resultsDiv.appendChild(block);
         });
       });
     }
 
-    // 게임 슬라이드 로드
+    // ✅ 게임 목록 불러오기
     async function loadGamesFromCSV() {
       const response = await fetch('./게임종류.csv');
       const text = await response.text();
@@ -307,7 +314,7 @@
       });
     }
 
-    // 리뷰 슬라이드 로드
+    // ✅ 리뷰 슬라이드 불러오기
     async function loadReviewsFromCSV() {
       const response = await fetch('./리뷰.csv');
       const text = await response.text();
@@ -330,7 +337,7 @@
       });
     }
 
-    // 사진 슬라이드 로드
+    // ✅ 사진 슬라이드 불러오기
     async function loadPhotosFromCSV() {
       const response = await fetch('./참여자들사진.csv');
       const text = await response.text();
@@ -353,7 +360,7 @@
       });
     }
 
-    // 게임 클릭 시 팝업
+    // ✅ 게임 클릭 시 팝업
     function showGameInfo(elem) {
       const name = elem.getAttribute('data-name');
       const players = elem.getAttribute('data-players');
@@ -374,7 +381,7 @@
       document.body.appendChild(popup);
     }
 
-    // 초기 실행
+    // ✅ 페이지 로드시 실행
     window.addEventListener('DOMContentLoaded', () => {
       loadGamesFromCSV();
       loadReviewsFromCSV();
